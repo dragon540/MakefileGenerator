@@ -3,4 +3,4 @@ project(MakefileGenerator C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(MakefileGenerator main.c)
+add_executable(MakefileGenerator src/main.c src/macro.h src/macro.c src/comm_line.h src/comm_line.c)
