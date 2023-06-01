@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "makefile_generate.h"
+#include "macro.h"
 
 // This function takes the directory of the project(where makefile is to be created) as argument
 // and creates a makefile at the location,
@@ -26,7 +27,28 @@ void divideMakefileInParts(char proj_fold[10000]) {
         fprintf(stderr, "Error: unable to generate Makefile\n");
         exit(0);
     }
-    fprintf(m_file, "%s\n\n", "# MACROS block");
-    fprintf(m_file, "%s\n\n", "# OBJECT_CODE generation block");
-    fprintf(m_file, "%s\n\n", "# EXECUTABLE generation block");
+    writeMacros(m_file);
+    //fprintf(m_file, "%s\n\n", "# MACROS block");
+    //fprintf(m_file, "%s\n\n", "# OBJECT_CODE generation block");
+    //fprintf(m_file, "%s\n\n", "# EXECUTABLE generation block");
+}
+
+void writeMacros(FILE *fileptr) {
+    fprintf(fileptr, "%s\n\n", "# MACROS block");
+
+    if(fileptr != NULL) {
+        if(strcmp(compiler, "null") != 0) {
+            fprintf(fileptr, "CC=%s\n", compiler);
+        }
+        if(strcmp(flag1, "null") != 0) {
+            fprintf(fileptr, "CFLAGS=%s\n", flag1);
+        }
+        if(strcmp(flag2, "null") != 0) {
+            fprintf(fileptr, "CFLAGS=%s\n", flag2);
+        }
+    }
+    else {
+        fprintf(stderr, "Error : unable to write to macro block\n");
+    }
+
 }
