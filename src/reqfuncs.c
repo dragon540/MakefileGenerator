@@ -7,8 +7,8 @@
 
 #include "reqfuncs.h"
 
-extern char fnamefromdir[1000][1000] = {"abcd", "abcd"
-                                                "abcd"};
+extern char fnamefromdir[1000][1000] = {"abcd.c", "abcd.c", "abcd.c"};
+extern char fnamefromdirwoext[1000][1000] = {"ab", "ab", "ab"};
 
 int retfilefromDir(char src_folder[]) {
     unsigned int fname_idx = 0;
@@ -22,6 +22,9 @@ int retfilefromDir(char src_folder[]) {
                 if (fileisvalidcorcpp(dir->d_name)) {
                     flag++;
                     strcpy(fnamefromdir[fname_idx], dir->d_name);
+                    strcpy(fnamefromdirwoext[fname_idx],
+                           retfilefromDirwoext(fnamefromdirwoext[fname_idx],
+                                               dir->d_name) );
                     fname_idx++;
                 }
             }
@@ -58,4 +61,13 @@ int fileisvalidcorcpp(char file_name[]) {
         idx++;
     }
     return 0;
+}
+
+char* retfilefromDirwoext(char* file_name_woext_dest, char* file_name) {
+    unsigned int idx = 0;
+    while(file_name[idx] != '.') {
+        file_name_woext_dest[idx] = file_name[idx];
+        idx++;
+    }
+    return file_name_woext_dest;
 }

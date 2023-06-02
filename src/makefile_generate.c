@@ -37,7 +37,7 @@ void divideMakefileInParts(char proj_fold[10000]) {
 }
 
 void writeMacros(FILE *fileptr) {
-    fprintf(fileptr, "%s\n\n", "# MACROS block");
+    fprintf(fileptr, "%s\n", "# MACROS block");
 
     if(fileptr != NULL) {
         if(strcmp(compiler, "null") != 0) {
@@ -53,10 +53,12 @@ void writeMacros(FILE *fileptr) {
     else {
         fprintf(stderr, "Error : unable to write to macro block\n");
     }
+    //mandatory line break after the end of the block
+    fprintf(fileptr, "\n");
 }
 
 void writeObjCode(FILE *fileptr, char proj_fold[]) {
-    fprintf(fileptr, "%s\n\n", "# OBJECT_CODE generation block");
+    fprintf(fileptr, "%s\n", "# OBJECT_CODE generation block");
 
     if(fileptr != NULL) {
         // read through the directory and find files which meets the condition
@@ -66,16 +68,18 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
             while(x--) {
                 char file_name[100];
                 strcpy(file_name, fnamefromdir[x]);
-                fprintf(fileptr, "%s\n", file_name);
-                //fprintf(fileptr, "%s\n", "abcd");
+                //fprintf(fileptr, "%s\n", file_name);
+
+                fprintf(fileptr, "%s.o: %s\n", fnamefromdirwoext[x], fnamefromdir[x]);
+                fprintf(fileptr, "\t$(CC) $(CFLAGS) %s\n",fnamefromdir[x]);
             }
         }
-        // and write makefile command to generate object files if returned names are valid
-
     }
     else {
         fprintf(stderr, "Error : unable to write to OBJECT_CODE generation block\n");
     }
+    //mandatory line break after the end of the block
+    fprintf(fileptr, "\n");
 }
 
 void writeExec(FILE *fileptr) {
