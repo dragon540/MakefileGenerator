@@ -9,6 +9,7 @@
 
 #include "makefile_generate.h"
 #include "macro.h"
+#include "reqfuncs.h"
 
 // This function takes the directory of the project(where makefile is to be created) as argument
 // and creates a makefile at the location,
@@ -28,9 +29,11 @@ void divideMakefileInParts(char proj_fold[10000]) {
         exit(0);
     }
     writeMacros(m_file);
+    writeObjCode(m_file, proj_fold);
     //fprintf(m_file, "%s\n\n", "# MACROS block");
     //fprintf(m_file, "%s\n\n", "# OBJECT_CODE generation block");
     //fprintf(m_file, "%s\n\n", "# EXECUTABLE generation block");
+    fclose(m_file);
 }
 
 void writeMacros(FILE *fileptr) {
@@ -50,5 +53,31 @@ void writeMacros(FILE *fileptr) {
     else {
         fprintf(stderr, "Error : unable to write to macro block\n");
     }
+}
+
+void writeObjCode(FILE *fileptr, char proj_fold[]) {
+    fprintf(fileptr, "%s\n\n", "# OBJECT_CODE generation block");
+
+    if(fileptr != NULL) {
+        // read through the directory and find files which meets the condition
+        // return name of those files
+        int x;
+        if( (x = retfilefromDir(proj_fold)) >= 0 ) {
+            while(x--) {
+                char file_name[100];
+                strcpy(file_name, fnamefromdir[x]);
+                fprintf(fileptr, "%s\n", file_name);
+                //fprintf(fileptr, "%s\n", "abcd");
+            }
+        }
+        // and write makefile command to generate object files if returned names are valid
+
+    }
+    else {
+        fprintf(stderr, "Error : unable to write to OBJECT_CODE generation block\n");
+    }
+}
+
+void writeExec(FILE *fileptr) {
 
 }
