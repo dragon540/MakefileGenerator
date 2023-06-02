@@ -50,6 +50,7 @@ void writeMacros(FILE *fileptr) {
         if(strcmp(flag2, "null") != 0) {
             fprintf(fileptr, "CFLAGS=%s\n", flag2);
         }
+        fprintf(fileptr, "PROGNAME=%s\n", executableprog);
     }
     else {
         fprintf(stderr, "Error : unable to write to macro block\n");
@@ -87,7 +88,7 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
     fprintf(fileptr, "%s\n", "# EXECUTABLE_CODE generation block");
 
     if(fileptr != NULL) {
-        fprintf(fileptr, "%s: ", exec_name);
+        fprintf(fileptr, "$(PROGNAME): ");
         int y,x = 0;
         x = retfilefromDir(proj_fold);
         y = x;
@@ -98,7 +99,7 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
         while(x--) {
             fprintf(fileptr, "%s.o ", fnamefromdirwoext[x]);
         }
-        fprintf(fileptr, "-o %s", exec_name);
+        fprintf(fileptr, "-o $(PROGNAME)");
     }
     else {
         fprintf(stderr, "Error : unable to write to EXECUTABLE_CODE generation block\n");
