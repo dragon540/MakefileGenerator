@@ -30,6 +30,7 @@ void divideMakefileInParts(char proj_fold[10000]) {
     }
     writeMacros(m_file);
     writeObjCode(m_file, proj_fold);
+    writeExec(m_file, proj_fold, executableprog);
     //fprintf(m_file, "%s\n\n", "# MACROS block");
     //fprintf(m_file, "%s\n\n", "# OBJECT_CODE generation block");
     //fprintf(m_file, "%s\n\n", "# EXECUTABLE generation block");
@@ -82,6 +83,26 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
     fprintf(fileptr, "\n");
 }
 
-void writeExec(FILE *fileptr) {
+void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
+    fprintf(fileptr, "%s\n", "# EXECUTABLE_CODE generation block");
 
+    if(fileptr != NULL) {
+        fprintf(fileptr, "%s: ", exec_name);
+        int y,x = 0;
+        x = retfilefromDir(proj_fold);
+        y = x;
+        while(y--) {
+            fprintf(fileptr, "%s.o ",fnamefromdirwoext[y]);
+        }
+        fprintf(fileptr, "\n\t$(CC) ");
+        while(x--) {
+            fprintf(fileptr, "%s.o ", fnamefromdirwoext[x]);
+        }
+        fprintf(fileptr, "-o %s", exec_name);
+    }
+    else {
+        fprintf(stderr, "Error : unable to write to EXECUTABLE_CODE generation block\n");
+    }
+    //mandatory line break after the end of the block
+    fprintf(fileptr, "\n");
 }

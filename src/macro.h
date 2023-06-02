@@ -8,5 +8,6 @@
 extern char* compiler;
 extern char* flag1;
 extern char* flag2;
+extern char* executableprog;
 
 #endif //MAKEFILEGENERATOR_MACRO_H

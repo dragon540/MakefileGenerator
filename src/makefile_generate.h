@@ -9,7 +9,7 @@ void divideMakefileInParts(char proj_fold[1000]);
 
 void writeMacros(FILE *fp);
 void writeObjCode(FILE *fp, char proj_fold[]);
-void writeExec(FILE *fp);
+void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]);
 
 
 #endif //MAKEFILEGENERATOR_MAKEFILE_GENERATE_H
