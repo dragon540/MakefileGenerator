@@ -71,7 +71,15 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
                 strcpy(file_name, fnamefromdir[x]);
                 //fprintf(fileptr, "%s\n", file_name);
 
-                fprintf(fileptr, "%s.o: %s\n", fnamefromdirwoext[x], fnamefromdir[x]);
+                char temp_header[1000];
+                strcpy(temp_header, fnamefromdirwoext[x]);
+                strcat(temp_header, ".h");
+
+                if(strcmp(fnamefromdirwoext[x], "main") == 0)
+                    fprintf(fileptr, "%s.o: %s\n", fnamefromdirwoext[x], fnamefromdir[x]);
+                else
+                    fprintf(fileptr, "%s.o: %s %s\n", fnamefromdirwoext[x], fnamefromdir[x], temp_header);
+
                 fprintf(fileptr, "\t$(CC) $(CFLAGS) -c %s\n",fnamefromdir[x]);
             }
         }
