@@ -29,9 +29,12 @@ void divideMakefileInParts(char proj_fold[10000]) {
         exit(0);
     }
     writeMacros(m_file);
-    setAllParForMake(m_file, fnamefromdirwoext, proj_fold);
+
+    // this "all" section is outside any of the three blocks
+    setAllParForMake(m_file, fnameFromDirWOExt, proj_fold);
+
     writeObjCode(m_file, proj_fold);
-    writeExec(m_file, proj_fold, executableprog);
+    writeExec(m_file, proj_fold, execProgName);
 
     fclose(m_file);
 }
@@ -49,7 +52,7 @@ void writeMacros(FILE *fileptr) {
         if(strcmp(flag2, "null") != 0) {
             fprintf(fileptr, "CFLAGS=%s\n", flag2);
         }
-        fprintf(fileptr, "PROGNAME=%s\n", executableprog);
+        fprintf(fileptr, "PROGNAME=%s\n", execProgName);
     }
     else {
         fprintf(stderr, "Error : unable to write to macro block\n");
@@ -64,23 +67,23 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
     if(fileptr != NULL) {
         // read through the directory and find files which meets the condition
         // return name of those files
-        int x;
-        if( (x = retfilefromDir(proj_fold)) >= 0 ) {
+        unsigned int x;
+        if((x = retFileFromDir(proj_fold)) >= 0 ) {
             while(x--) {
                 char file_name[100];
-                strcpy(file_name, fnamefromdir[x]);
+                strcpy(file_name, fnameFromDir[x]);
                 //fprintf(fileptr, "%s\n", file_name);
 
                 char temp_header[1000];
-                strcpy(temp_header, fnamefromdirwoext[x]);
+                strcpy(temp_header, fnameFromDirWOExt[x]);
                 strcat(temp_header, ".h");
 
-                if(strcmp(fnamefromdirwoext[x], "main") == 0)
-                    fprintf(fileptr, "%s.o: %s\n", fnamefromdirwoext[x], fnamefromdir[x]);
+                if(strcmp(fnameFromDirWOExt[x], "main") == 0)
+                    fprintf(fileptr, "%s.o: %s\n", fnameFromDirWOExt[x], fnameFromDir[x]);
                 else
-                    fprintf(fileptr, "%s.o: %s %s\n", fnamefromdirwoext[x], fnamefromdir[x], temp_header);
+                    fprintf(fileptr, "%s.o: %s %s\n", fnameFromDirWOExt[x], fnameFromDir[x], temp_header);
 
-                fprintf(fileptr, "\t$(CC) $(CFLAGS) -c %s\n",fnamefromdir[x]);
+                fprintf(fileptr, "\t$(CC) $(CFLAGS) -c %s\n", fnameFromDir[x]);
             }
         }
     }
@@ -97,14 +100,14 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
     if(fileptr != NULL) {
         fprintf(fileptr, "$(PROGNAME): ");
         int y,x = 0;
-        x = retfilefromDir(proj_fold);
+        x = retFileFromDir(proj_fold);
         y = x;
         while(y--) {
-            fprintf(fileptr, "%s.o ",fnamefromdirwoext[y]);
+            fprintf(fileptr, "%s.o ", fnameFromDirWOExt[y]);
         }
         fprintf(fileptr, "\n\t$(CC) ");
         while(x--) {
-            fprintf(fileptr, "%s.o ", fnamefromdirwoext[x]);
+            fprintf(fileptr, "%s.o ", fnameFromDirWOExt[x]);
         }
         fprintf(fileptr, "-o $(PROGNAME)");
     }
@@ -115,8 +118,11 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
     fprintf(fileptr, "\n");
 }
 
+// this function writes the "all :...." commands in the makefile
+// this is necessary in order to ensure that every command in the makefile is executed
+// without this command only the first makefile command is executed
 void setAllParForMake(FILE* fileptr, char fnamefromdirwoext[][1000], char proj_fold[]) {
-    unsigned int numOfObjFile = retfilefromDir(proj_fold);
+    unsigned int numOfObjFile = retFileFromDir(proj_fold);
     if(numOfObjFile) {
         fprintf(fileptr, "all: ");
     }

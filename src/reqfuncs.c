@@ -7,10 +7,10 @@
 
 #include "reqfuncs.h"
 
-extern char fnamefromdir[1000][1000] = {"abcd.c", "abcd.c", "abcd.c"};
-extern char fnamefromdirwoext[1000][1000] = {"ab", "ab", "ab"};
+extern char fnameFromDir[1000][1000] = {"abcd.c", "abcd.c", "abcd.c"};
+extern char fnameFromDirWOExt[1000][1000] = {"ab", "ab", "ab"};
 
-int retfilefromDir(char src_folder[]) {
+int retFileFromDir(char src_folder[]) {
     unsigned int fname_idx = 0;
     int flag = 0;
     struct dirent *dir;
@@ -19,11 +19,11 @@ int retfilefromDir(char src_folder[]) {
     if(dp) {
         while( (dir = readdir(dp)) != NULL) {
             if(dir->d_type == DT_REG) {
-                if (fileisvalidcorcpp(dir->d_name)) {
+                if (fileIsValidC_Cpp(dir->d_name)) {
                     flag++;
-                    strcpy(fnamefromdir[fname_idx], dir->d_name);
-                    strcpy(fnamefromdirwoext[fname_idx],
-                           retfilefromDirwoext(fnamefromdirwoext[fname_idx],
+                    strcpy(fnameFromDir[fname_idx], dir->d_name);
+                    strcpy(fnameFromDirWOExt[fname_idx],
+                           retFileFromDirWOExt(fnameFromDirWOExt[fname_idx],
                                                dir->d_name) );
                     fname_idx++;
                 }
@@ -42,7 +42,7 @@ int retfilefromDir(char src_folder[]) {
 // modify this function later if support for other languages is to be added
 // return 1 if given file is valid
 // return 0 if given file is invalid
-int fileisvalidcorcpp(char file_name[]) {
+int fileIsValidC_Cpp(char file_name[]) {
     unsigned int idx = 0;
     while(file_name[idx] != '\0') {
         if(file_name[idx] == '.') {
@@ -63,7 +63,7 @@ int fileisvalidcorcpp(char file_name[]) {
     return 0;
 }
 
-char* retfilefromDirwoext(char* file_name_woext_dest, char* file_name) {
+char* retFileFromDirWOExt(char* file_name_woext_dest, char* file_name) {
     unsigned int idx = 0;
     while(file_name[idx] != '.') {
         file_name_woext_dest[idx] = file_name[idx];

@@ -41,7 +41,7 @@ void commandLineArgReader(int argc, char* argv[]) {
            else if(strcmp(argv[idx], "-exec_name") == 0 ) {
                if((idx + 1) < argc) {
                    idx++;
-                   executableprog = argv[idx];
+                   execProgName = argv[idx];
                }
            }
        }

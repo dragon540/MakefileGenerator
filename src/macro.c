@@ -6,4 +6,4 @@
 char* compiler = "null";
 char* flag1 = "null";
 char* flag2 = "null";
-char* executableprog = "main";
+char* execProgName = "main";

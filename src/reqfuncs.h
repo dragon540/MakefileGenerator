@@ -7,11 +7,14 @@
 
 #include <dirent.h>
 
-extern char fnamefromdir[1000][1000];
-extern char fnamefromdirwoext[1000][1000];
+// this array stores names of valid c or cpp files
+extern char fnameFromDir[1000][1000];
 
-int retfilefromDir(char* src_folder);
-int fileisvalidcorcpp(char* file_name);
-char* retfilefromDirwoext(char* file_name_woext_dest, char* file_name);
+// this array stores names of valid c or cpp files without extension
+extern char fnameFromDirWOExt[1000][1000];
+
+int retFileFromDir(char* src_folder);
+int fileIsValidC_Cpp(char* file_name);
+char* retFileFromDirWOExt(char* file_name_woext_dest, char* file_name);
 
 #endif //MAKEFILEGENERATOR_REQFUNCS_H
