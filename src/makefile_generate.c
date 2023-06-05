@@ -29,11 +29,10 @@ void divideMakefileInParts(char proj_fold[10000]) {
         exit(0);
     }
     writeMacros(m_file);
+    setAllParForMake(m_file, fnamefromdirwoext, proj_fold);
     writeObjCode(m_file, proj_fold);
     writeExec(m_file, proj_fold, executableprog);
-    //fprintf(m_file, "%s\n\n", "# MACROS block");
-    //fprintf(m_file, "%s\n\n", "# OBJECT_CODE generation block");
-    //fprintf(m_file, "%s\n\n", "# EXECUTABLE generation block");
+
     fclose(m_file);
 }
 
@@ -73,7 +72,7 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
                 //fprintf(fileptr, "%s\n", file_name);
 
                 fprintf(fileptr, "%s.o: %s\n", fnamefromdirwoext[x], fnamefromdir[x]);
-                fprintf(fileptr, "\t$(CC) $(CFLAGS) %s\n",fnamefromdir[x]);
+                fprintf(fileptr, "\t$(CC) $(CFLAGS) -c %s\n",fnamefromdir[x]);
             }
         }
     }
@@ -106,4 +105,18 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
     }
     //mandatory line break after the end of the block
     fprintf(fileptr, "\n");
+}
+
+void setAllParForMake(FILE* fileptr, char fnamefromdirwoext[][1000], char proj_fold[]) {
+    unsigned int numOfObjFile = retfilefromDir(proj_fold);
+    if(numOfObjFile) {
+        fprintf(fileptr, "all: ");
+    }
+    while (numOfObjFile--) {
+        char objfile[1000];
+        strcpy(objfile, fnamefromdirwoext[numOfObjFile]);
+        strcat(objfile, ".o ");
+        fprintf(fileptr, "%s", objfile);
+    }
+    fprintf(fileptr, "$(PROGNAME)\n\n");
 }

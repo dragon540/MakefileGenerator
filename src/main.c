@@ -9,7 +9,7 @@
 int main(int argc, char* argv[]) {
     commandLineArgReader(argc, argv);
 
-    char path[1000] = "/home/shobhit/Desktop/TestFolder"; // machine dependent code - written here only for easier
+    char path[1000] = "/home/shobhit/Desktop/TestFolder2"; // machine dependent code - written here only for easier
                                                           // debugging
     divideMakefileInParts(path);
     printf("compiler is : %s\n", compiler);
