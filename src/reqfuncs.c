@@ -4,11 +4,16 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
+#include <bits/types/FILE.h>
 
 #include "reqfuncs.h"
 
 extern char fnameFromDir[1000][1000] = {"abcd.c", "abcd.c", "abcd.c"};
 extern char fnameFromDirWOExt[1000][1000] = {"ab", "ab", "ab"};
+
+extern char temp_header[1000] = "";
+
+extern char headerFromGivenValidFile[1000][1000] = {"\0"};
 
 int retFileFromDir(char src_folder[]) {
     unsigned int fname_idx = 0;
@@ -70,4 +75,63 @@ char* retFileFromDirWOExt(char* file_name_woext_dest, char* file_name) {
         idx++;
     }
     return file_name_woext_dest;
+}
+
+// this function checks if a given substring is present (from the begining  of the string) in the other string
+// return 0 if substring is not present
+// return length of the substring if substring is present
+int patExist(char* search, char* searchIn) {
+    unsigned int idx = 0;
+    while(searchIn[idx] != '\0') {
+        if(search[idx] != searchIn[idx]) {
+            return 0;
+        }
+        else if( (search[idx] == searchIn[idx]) && (search[idx + 1] == '\0') ) {
+            return idx;
+        }
+        idx++;
+    }
+}
+
+char* retHeader(char* source) {
+    unsigned int idx;
+
+    // cleaning temp_header string before modifying it
+    for(unsigned int i=0;i<1000;i++) temp_header[i] = '\0';
+
+    idx = patExist("#include \"", source);
+    if(idx == 0) {
+        idx = patExist("#include\"", source);
+    }
+    if(idx == 0) return temp_header;
+    else {
+        idx++;
+        unsigned int t_idx = 0;
+        while(source[idx + t_idx] != '"') {
+            temp_header[t_idx] = source[idx + t_idx];
+            t_idx++;
+        }
+    }
+    return temp_header;
+}
+
+void readAllHeaderFromFile(char* srcFileName) {
+    // cleaning headerFromGivenValidFile array before modifying it
+    for(unsigned i=0;i<1000;i++) {
+        strcpy(headerFromGivenValidFile[i], "\0");
+    }
+    FILE* fptr;
+    fptr = fopen(srcFileName, "r");
+    char line[100];
+    unsigned int idx = 0;
+    if(fptr != NULL) {
+        while( fgets(line, 100, fptr) ) {
+            char src_line[1000];
+
+            strcpy(src_line, retHeader(line));
+            strcpy(headerFromGivenValidFile[idx], src_line);
+            idx++;
+        }
+    }
+    fclose(fptr);
 }

@@ -70,19 +70,31 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
         unsigned int x;
         if((x = retFileFromDir(proj_fold)) >= 0 ) {
             while(x--) {
-                char file_name[100];
-                strcpy(file_name, fnameFromDir[x]);
+                char file_name[1000];
+                // file name
+                strcpy(file_name, fnameFromDir[x]); // file name is stored file_name variable
+
+                printf("%s\n", file_name);
+                // for debugging
                 //fprintf(fileptr, "%s\n", file_name);
 
-                char temp_header[1000];
-                strcpy(temp_header, fnameFromDirWOExt[x]);
-                strcat(temp_header, ".h");
 
-                if(strcmp(fnameFromDirWOExt[x], "main") == 0)
-                    fprintf(fileptr, "%s.o: %s\n", fnameFromDirWOExt[x], fnameFromDir[x]);
-                else
-                    fprintf(fileptr, "%s.o: %s %s\n", fnameFromDirWOExt[x], fnameFromDir[x], temp_header);
+                // remove this once the functionality to read each files for local headers is implemented
+                fprintf(fileptr, "%s.o: %s", fnameFromDirWOExt[x], fnameFromDir[x]);
 
+                char filenamewithpath[1000];
+                strcpy(filenamewithpath, proj_fold);
+                strcat(filenamewithpath, "/");
+                strcat(filenamewithpath, file_name);
+
+                readAllHeaderFromFile(filenamewithpath);
+                for(int u=0;u<1000;u++) {
+                    if(strcmp(headerFromGivenValidFile[u], "\0")!=0) {
+                        fprintf(fileptr, " %s", headerFromGivenValidFile[u]);
+                        //printf("%d\n", u);
+                    }
+                }
+                fprintf(fileptr, "\n");
                 fprintf(fileptr, "\t$(CC) $(CFLAGS) -c %s\n", fnameFromDir[x]);
             }
         }
