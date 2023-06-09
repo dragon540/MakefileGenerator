@@ -68,18 +68,14 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
         // read through the directory and find files which meets the condition
         // return name of those files
         unsigned int x;
+
         if((x = retFileFromDir(proj_fold)) >= 0 ) {
+            // iterating through all the valid c or cpp files the project directory
             while(x--) {
                 char file_name[1000];
                 // file name
                 strcpy(file_name, fnameFromDir[x]); // file name is stored file_name variable
 
-                printf("%s\n", file_name);
-                // for debugging
-                //fprintf(fileptr, "%s\n", file_name);
-
-
-                // remove this once the functionality to read each files for local headers is implemented
                 fprintf(fileptr, "%s.o: %s", fnameFromDirWOExt[x], fnameFromDir[x]);
 
                 char filenamewithpath[1000];
@@ -87,6 +83,7 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
                 strcat(filenamewithpath, "/");
                 strcat(filenamewithpath, file_name);
 
+                // reading all the headers from the the current valid c or cpp file
                 readAllHeaderFromFile(filenamewithpath);
                 for(int u=0;u<1000;u++) {
                     if(strcmp(headerFromGivenValidFile[u], "\0")!=0) {

@@ -8,8 +8,8 @@
 
 #include "reqfuncs.h"
 
-extern char fnameFromDir[1000][1000] = {"abcd.c", "abcd.c", "abcd.c"};
-extern char fnameFromDirWOExt[1000][1000] = {"ab", "ab", "ab"};
+extern char fnameFromDir[1000][1000] = {"", "", ""};
+extern char fnameFromDirWOExt[1000][1000] = {"", "", ""};
 
 extern char temp_header[1000] = "";
 
@@ -93,6 +93,9 @@ int patExist(char* search, char* searchIn) {
     }
 }
 
+// this function takes a line of string as argument and modifies the string temp_header
+// if valid local header is present
+// otherwise modifies it to "\0"
 char* retHeader(char* source) {
     unsigned int idx;
 
@@ -115,6 +118,9 @@ char* retHeader(char* source) {
     return temp_header;
 }
 
+// this function takes the filename of a source code as argument
+// and reads all local headers present in the source code
+// and modifies the string array headerFromGivenValidFile[] accordingly
 void readAllHeaderFromFile(char* srcFileName) {
     // cleaning headerFromGivenValidFile array before modifying it
     for(unsigned i=0;i<1000;i++) {

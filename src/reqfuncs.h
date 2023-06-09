@@ -27,8 +27,14 @@ char* retFileFromDirWOExt(char* file_name_woext_dest, char* file_name);
 // return length of the substring if substring is present
 int patExist(char* search, char* searchIn);
 
+// this function takes a line of string as argument and modifies the string temp_header
+// if valid local header is present
+// otherwise modifies it to "\0"
 char* retHeader(char* source);
 
+// this function takes the filename of a source code as argument
+// and reads all local headers present in the source code
+// and modifies the string array headerFromGivenValidFile[] accordingly
 void readAllHeaderFromFile(char* srcFileName);
 
 #endif //MAKEFILEGENERATOR_REQFUNCS_H
