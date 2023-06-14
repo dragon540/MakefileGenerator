@@ -83,7 +83,7 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
                 strcat(filenamewithpath, "/");
                 strcat(filenamewithpath, file_name);
 
-                // reading all the headers from the the current valid c or cpp file
+                // reading all the headers from the current valid c or cpp file
                 readAllHeaderFromFile(filenamewithpath);
                 for(int u=0;u<1000;u++) {
                     if(strcmp(headerFromGivenValidFile[u], "\0")!=0) {
@@ -108,7 +108,7 @@ void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
 
     if(fileptr != NULL) {
         fprintf(fileptr, "$(PROGNAME): ");
-        int y,x = 0;
+        int y,x;
         x = retFileFromDir(proj_fold);
         y = x;
         while(y--) {

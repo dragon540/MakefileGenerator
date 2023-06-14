@@ -38,8 +38,17 @@ void commandLineArgReader(int argc, char* argv[]) {
                    fprintf(stderr, "flag_2 argument missing\n");
                }
            }
+           else if( strcmp(argv[idx], "-S") == 0) {
+               if( (idx + 1) < argc) {
+                   idx++;
+                   src_path = argv[idx];
+               }
+               else {
+                   fprintf(stderr, "Error: source code directory for which Makefile has to be generated is missing\n");
+               }
+           }
            else if(strcmp(argv[idx], "-exec_name") == 0 ) {
-               if((idx + 1) < argc) {
+               if ((idx + 1) < argc) {
                    idx++;
                    execProgName = argv[idx];
                }
