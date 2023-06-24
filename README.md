@@ -60,6 +60,7 @@ For example:
       |-f1        | For setting compile flag number 1                                       | No
       |-f2        | For setting compile flag number 2                                       | No
       |-exec_name | For setting the name for the executable to be produced                  | No
+      |-block_comment| To set option of enabling or disabling block identifying comment in makefile (By default it is disabled)| No
 
 ### Example :
       $ ./MakefileGenerator -S /home/Programs.... -ccset gcc -f1 Wall -f2 pipe -exec_name program
