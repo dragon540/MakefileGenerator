@@ -60,7 +60,7 @@ void commandLineArgReader(int argc, char* argv[]) {
                if((idx + 1) < argc) {
                    idx++;
                    block_id_flag = atoi(argv[idx]);
-                   printf("block_id_flag = %d\n", block_id_flag); // for debugging
+                   //printf("block_id_flag = %d\n", block_id_flag); // for debugging
                }
            }
        }
