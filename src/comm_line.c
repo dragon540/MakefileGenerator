@@ -3,9 +3,12 @@
 //
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "comm_line.h"
 #include "macro.h"
+
+int block_id_flag = 0;
 
 void commandLineArgReader(int argc, char* argv[]) {
    unsigned int idx;
@@ -51,6 +54,13 @@ void commandLineArgReader(int argc, char* argv[]) {
                if ((idx + 1) < argc) {
                    idx++;
                    execProgName = argv[idx];
+               }
+           }
+           else if(strcmp(argv[idx], "-block_comment") == 0) {
+               if((idx + 1) < argc) {
+                   idx++;
+                   block_id_flag = atoi(argv[idx]);
+                   printf("block_id_flag = %d\n", block_id_flag); // for debugging
                }
            }
        }

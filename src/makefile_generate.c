@@ -10,6 +10,7 @@
 #include "makefile_generate.h"
 #include "macro.h"
 #include "reqfuncs.h"
+#include "comm_line.h"
 
 // This function takes the directory of the project(where makefile is to be created) as argument
 // and creates a makefile at the location,
@@ -40,7 +41,9 @@ void divideMakefileInParts(char proj_fold[10000]) {
 }
 
 void writeMacros(FILE *fileptr) {
-    fprintf(fileptr, "%s\n", "# MACROS block");
+
+    if(block_id_flag == 1)
+        fprintf(fileptr, "%s\n", "# MACROS block");
 
     if(fileptr != NULL) {
         if(strcmp(compiler, "null") != 0) {
@@ -62,7 +65,9 @@ void writeMacros(FILE *fileptr) {
 }
 
 void writeObjCode(FILE *fileptr, char proj_fold[]) {
-    fprintf(fileptr, "%s\n", "# OBJECT_CODE generation block");
+
+    if(block_id_flag == 1)
+        fprintf(fileptr, "%s\n", "# OBJECT_CODE generation block");
 
     if(fileptr != NULL) {
         // read through the directory and find files which meets the condition
@@ -104,7 +109,9 @@ void writeObjCode(FILE *fileptr, char proj_fold[]) {
 }
 
 void writeExec(FILE *fileptr, char proj_fold[], char exec_name[]) {
-    fprintf(fileptr, "%s\n", "# EXECUTABLE_CODE generation block");
+
+    if(block_id_flag == 1)
+        fprintf(fileptr, "%s\n", "# EXECUTABLE_CODE generation block");
 
     if(fileptr != NULL) {
         fprintf(fileptr, "$(PROGNAME): ");

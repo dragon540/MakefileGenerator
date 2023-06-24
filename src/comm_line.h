@@ -5,6 +5,8 @@
 #ifndef MAKEFILEGENERATOR_COMM_LINE_H
 #define MAKEFILEGENERATOR_COMM_LINE_H
 
+extern int block_id_flag;
+
 void commandLineArgReader(int argc, char* argv[]);
 
 #endif //MAKEFILEGENERATOR_COMM_LINE_H
